@@ -1,0 +1,2 @@
+include ':app', 'sdk'
+rootProject.name='CameraX_MVVM_SDK'
