@@ -10,5 +10,8 @@ Android Studio 3.5.1
 camerax_version = "1.0.0-alpha01"
 
 参照了以下链接：
+
 https://github.com/android/camera-samples/tree/master/CameraXBasic
 https://github.com/glumes/camera
+
+需要手动设置相机权限
