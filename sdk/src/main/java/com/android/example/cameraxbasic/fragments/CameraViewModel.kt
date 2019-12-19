@@ -6,6 +6,6 @@ import java.io.File
 
 abstract class CameraViewModel : BaseViewModel() {
     val takePicture by lazy { MutableLiveData<Boolean>() }
-    val isDocumentCaptureOver by lazy { MutableLiveData<File>() }
+    val isCaptureCompleted by lazy { MutableLiveData<File>() }
     abstract fun onTakePicture()
 }

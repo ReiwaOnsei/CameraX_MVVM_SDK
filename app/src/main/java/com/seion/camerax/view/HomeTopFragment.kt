@@ -43,7 +43,7 @@ class HomeTopFragment : BaseFragment() {
 
         viewModel.isClickBtn.observe(this, Observer {
             if (it) {
-                startActivity(Intent(activity, CustomCaptureActivity::class.java))
+                startActivity(Intent(activity, CaptureActivity::class.java))
                 activity?.finish()
             }
         })

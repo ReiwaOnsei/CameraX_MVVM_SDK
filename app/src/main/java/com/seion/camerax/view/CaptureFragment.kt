@@ -11,18 +11,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.example.cameraxbasic.R
-import com.android.example.cameraxbasic.databinding.FragmentCameraCaptureBinding
+import com.android.example.cameraxbasic.databinding.FragmentCaptureBinding
 import com.android.example.cameraxbasic.fragments.CameraFragment
 import com.android.example.cameraxbasic.utils.ImageUtils
 import com.bumptech.glide.Glide
 import com.seion.camerax.sdk.base.BaseViewModel
-import kotlinx.android.synthetic.main.fragment_camera_capture.*
+import kotlinx.android.synthetic.main.fragment_camera_control_ui.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class CustomCameraFragment : CameraFragment(){
+class CaptureFragment : CameraFragment() {
     override fun setGalleryThumbnail(file: File) {
         // Reference of the view that holds the gallery thumbnail
         val thumbnail = photo_view_button
@@ -56,19 +56,19 @@ class CustomCameraFragment : CameraFragment(){
         })
     }
 
-    override fun isDocumentCaptureOver(file: File) {
+    override fun isCaptureCompleted(file: File) {
         Toast.makeText(context, "照片信息:${file.exists()} ${file.name}", Toast.LENGTH_LONG).show()
     }
 
-    private lateinit var fragmentCameraCaptureBinding: FragmentCameraCaptureBinding
-    var vModel = vm as CustomCameraViewModel
+    private lateinit var fragmentCameraCaptureBinding: FragmentCaptureBinding
+    var vModel = vm as CaptureViewModel
 
     companion object {
-        fun newInstance() = CustomCameraFragment()
+        fun newInstance() = CaptureFragment()
     }
 
     override fun createViewModel(): BaseViewModel = ViewModelProvider.NewInstanceFactory().create(
-        CustomCameraViewModel::class.java
+        CaptureViewModel::class.java
     )
 
     override fun onCreateView(
@@ -77,10 +77,11 @@ class CustomCameraFragment : CameraFragment(){
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        fragmentCameraCaptureBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_camera_capture, container, false)
+        fragmentCameraCaptureBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_capture, container, false)
 
         fragmentCameraCaptureBinding.lifecycleOwner = this
-        fragmentCameraCaptureBinding.viewModel = vModel
+        fragmentCameraCaptureBinding.layoutCameraControlUi.viewModel = vModel
 
         return fragmentCameraCaptureBinding.root
     }

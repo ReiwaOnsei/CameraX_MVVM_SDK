@@ -47,7 +47,7 @@
         </activity>
 
         <activity
-            android:name="com.seion.camerax.app.view.CustomCaptureActivity"
+            android:name="com.seion.camerax.app.view.CaptureActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 

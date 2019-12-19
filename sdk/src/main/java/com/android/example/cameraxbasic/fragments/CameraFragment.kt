@@ -19,7 +19,6 @@ package com.android.example.cameraxbasic.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaScannerConnection
 import android.os.Build
@@ -33,7 +32,6 @@ import android.util.Size
 import android.view.TextureView
 import android.view.View
 import android.webkit.MimeTypeMap
-import android.widget.ImageButton
 import androidx.camera.core.*
 import androidx.camera.core.ImageCapture.CaptureMode
 import androidx.camera.core.ImageCapture.Metadata
@@ -44,8 +42,6 @@ import com.android.example.cameraxbasic.R
 import com.android.example.cameraxbasic.utils.ANIMATION_FAST_MILLIS
 import com.android.example.cameraxbasic.utils.ANIMATION_SLOW_MILLIS
 import com.android.example.cameraxbasic.utils.AutoFitPreviewBuilder
-import com.android.example.cameraxbasic.utils.ImageUtils
-import com.bumptech.glide.Glide
 import com.seion.camerax.sdk.base.BaseFragment
 import com.seion.camerax.sdk.base.BaseViewModel
 import kotlinx.coroutines.*
@@ -111,12 +107,12 @@ abstract class CameraFragment : BaseFragment(), CoroutineScope {
             }
         })
 
-        viewModel.isDocumentCaptureOver.observe(this, Observer {
-            isDocumentCaptureOver(it)
+        viewModel.isCaptureCompleted.observe(this, Observer {
+            isCaptureCompleted(it)
         })
     }
 
-    abstract fun isDocumentCaptureOver(file: File)
+    abstract fun isCaptureCompleted(file: File)
 
     private lateinit var container: ConstraintLayout
     private lateinit var viewFinder: TextureView
@@ -176,7 +172,7 @@ abstract class CameraFragment : BaseFragment(), CoroutineScope {
                 setGalleryThumbnail(photoFile)
             }
 
-            viewModel.isDocumentCaptureOver.postValue(photoFile)
+            viewModel.isCaptureCompleted.postValue(photoFile)
 
             // If the folder selected is an external media directory, this is unnecessary
             // but otherwise other apps will not be able to access our images unless we

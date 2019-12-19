@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.android.example.cameraxbasic.fragments.CameraViewModel
 import java.io.File
 
-class CustomCameraViewModel : CameraViewModel() {
+class CaptureViewModel : CameraViewModel() {
     val isReviewPicture by lazy { MutableLiveData<File>() }
 
    override fun onTakePicture() {
@@ -12,6 +12,6 @@ class CustomCameraViewModel : CameraViewModel() {
    }
 
     fun onReviewPicture(){
-        isReviewPicture.postValue(isDocumentCaptureOver.value)
+        isReviewPicture.postValue(isCaptureCompleted.value)
     }
 }

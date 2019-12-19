@@ -20,18 +20,13 @@
 
         <variable
             name="viewModel"
-            type="com.seion.camerax.app.view.CustomCameraViewModel" />
+            type="com.seion.camerax.app.view.CaptureViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/camera_ui_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <include
-            layout="@layout/fragment_camera_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
         <!-- Camera control and gallery buttons -->
         <ImageButton
