@@ -1,17 +1,14 @@
 version: 2
-
-defaults: &defaults
-  working_directory: ~/code
-  docker:
-    - image: circleci/android:api-29
-  environment:
-    JVM_OPTS: -Xmx3200m
-
 jobs:
   build:
-    <<: *defaults
+    working_directory: ~/code
+    docker:
+      - image: circleci/android:api-29
+    environment:
+      JVM_OPTS: -Xmx4G
     steps:
       - checkout
+      - run: echo "Mirkelam is working for you 👯"
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -24,41 +21,14 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Decrypt google-services.json
-          command: openssl aes-256-cbc -k $DECRYPT_KEY -d -in app/google-services.json -out app/google-services.json -md md5
-      - run:
-          name: Check lint
-          command: ./gradlew :app:check -x test
-      - run:
-          name: Build apk
-          command: ./gradlew :app:assembleDebug
-      - store_artifacts:
-          path: app/build/outputs/apk/app-debug.apk
-          destination: app-debug.apk
+          name: Run Tests
+          command: ./gradlew lint test
       - store_test_results:
-          path: app/build/test-results
-      - persist_to_workspace:
-          root: ~/code
-          paths:
-            - .
-
-  deploy:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/code
+                path: app/build/test-results
+                destination: test-results/
       - run:
-          name: Build apk
-          command: ./gradlew :app:assembleRelease
+          name: Initial build
+          command: ./gradlew clean assembleRelease --no-daemon --stacktrace
       - store_artifacts:
-          path: app/build/outputs/apk/app-release.apk
-          destination: app-release.apk
-      - store_artifacts:
-          path: app/build/outputs/mapping/release/dump.txt
-          destination: dump.txt
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-    - build
-    - deploy
+          path: app/build/outputs/apk/
+          destination: apks/
