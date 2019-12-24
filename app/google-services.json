@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "444638103651",
+    "firebase_url": "https://fir-android-test-23625.firebaseio.com",
+    "project_id": "fir-android-test-23625",
+    "storage_bucket": "fir-android-test-23625.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444638103651:android:9d8ec85ab3750f8b15d056",
+        "android_client_info": {
+          "package_name": "com.android.example.cameraxbasic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444638103651-sd5poc12gkaadssddt7g418o3jarclor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYuqhH6NBKq7G0cpFGAcvemt_cUJp_rhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444638103651-sd5poc12gkaadssddt7g418o3jarclor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
