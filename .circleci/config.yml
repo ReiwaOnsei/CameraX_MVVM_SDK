@@ -1,34 +1,25 @@
 version: 2
 jobs:
-  build:
-    working_directory: ~/code
+  deploy_dev: # ジョブ名
     docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx4G
+      - image: circleci/node:10.7 # ジョブ実行環境のDockerイメージを記述
     steps:
-      - checkout
-      - run: echo "Mirkelam is working for you 👯"
-      - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - checkout # ソースコードのチェックアウト
+      - run: # 順に実行したいコマンドとコマンドに名前をつけます
+          name: npm install
+          command: npm i
       - run:
-          name: Download Dependencies
-          command: |
-              sudo chmod +x gradlew
-              ./gradlew androidDependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          name: build
+          command: npm run build
       - run:
-          name: Run Tests
-          command: ./gradlew lint test
-      - store_test_results:
-                path: app/build/test-results
-                destination: test-results/
-      - run:
-          name: Initial build
-          command: ./gradlew clean assembleDebug --no-daemon --stacktrace
-      - store_artifacts:
-          path: app/build/outputs/apk/
-          destination: apks/
+          name: deploy to Firebase Hosting
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN # プロジェクト上のfirebase-toolsでデプロイします
+
+workflows:
+  version: 2
+  deploy_dev: # ワークフローの名前
+    jobs:
+      - deploy_dev: # 上で定義したジョブを指定します
+          filters:
+            branches:
+              only: develop # developブランチのみを実行対象とします
