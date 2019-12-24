@@ -58,7 +58,7 @@ jobs:
           destination: dump.txt
 workflows:
   version: 2
-  workflow:
+  build_and_deploy:
     jobs:
     - build
     - deploy
