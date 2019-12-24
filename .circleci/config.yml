@@ -3,27 +3,26 @@
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
 version: 2
-jobs:	jobs:
-  deploy_dev: # ジョブ名	  build:
-    docker:	    docker:
-      - image: circleci/node:10.7 # ジョブ実行環境のDockerイメージを記述	      - image: circleci/node:8
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
 
     working_directory: ~/repo
 
-    steps:	    steps:
-      - checkout # ソースコードのチェックアウト	      - checkout
-      - run: # 順に実行したいコマンドとコマンドに名前をつけます	
-          name: npm install	      # Download and cache dependencies
-          command: npm i	      - restore_cache:
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - run: npm install
-
-      - run:	      - run:
-          name: build	          name: 'Install Dependecies'
+      - run:
+          name: 'Install Dependecies'
           command: npm install --save-dev firebase-tools
 
       - save_cache:
@@ -33,11 +32,9 @@ jobs:	jobs:
 
       - run:
           name: 'Build Client Code(react-scripts によるビルド実行)'
-          command: npm run build	          command: npm run build
-
-      - attach_workspace:
-          at: .
-
-      - run:	      - run:
-          name: deploy to Firebase Hosting	          name: 'Deploy to Hosting'
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN # プロジェクト上のfirebase-toolsでデプロイします	          command: node_modules/.bin/firebase deploy --only hosting --project "$FIREBASE_PJ" --token "$FIREBASE_TOKEN"
+          command: npm run build
+      - run:
+          name: 'Deploy to Hosting'
+          command: >- 
+              ln -s ./node_modules/firebase-tools/bin/firebase . &&
+              ./firebase deploy --only hosting --project "$FIREBASE_PROJECT_ID" --token "$FIREBASE_TOKEN"
